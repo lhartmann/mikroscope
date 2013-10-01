@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QtCore>
+#include <QFileDialog>
 #include <QDir>
 #include <QDirIterator>
 #include <QPainter>
@@ -12,10 +13,15 @@ static void crosshair(cv::Mat &img, cv::Point p, cv::Size sz, cv::Scalar color) 
     cv::line(img, cv::Point(p.x, p.y-sz.height/2), cv::Point(p.x, p.y+sz.height/2), color);
 }
 
-static void drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky) {
+void MainWindow::drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky) {
     int x0 = img.size[1] / 2;
     int y0 = img.size[0] / 2;
     double wmm = img.size[1] * kx;
+    double hmm = img.size[0] * ky;
+
+    //////////////
+    /// X Axis ///
+    //////////////
 
     // Draw 0.1mm ticks
     for (int i = -wmm/kx/0.1; i<=+wmm/kx/0.1; ++i) {
@@ -37,6 +43,59 @@ static void drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky) {
 
     // Draw X axis
     cv::line(img, cv::Point(0,y0), cv::Point(2*x0+5,y0), color);
+
+    //////////////
+    /// Y Axis ///
+    //////////////
+
+    if (ui->cbRuler->currentIndex() == 1) {
+        // Draw 0.1mm ticks
+        for (int i = -hmm/ky/0.1; i<=+hmm/ky/0.1; ++i) {
+            int y = y0 + i*0.1/ky + 0.5;
+            cv::line(img, cv::Point(x0-5, y), cv::Point(x0+5, y), color);
+        }
+
+        // Draw 0.5mm ticks
+        for (int i = -hmm/ky/0.5; i<=+hmm/ky/0.5; ++i) {
+            int y = y0 + i*0.5/ky + 0.5;
+            cv::line(img, cv::Point(x0-10, y), cv::Point(x0+10, y), color);
+        }
+
+        // Draw 1.0mm ticks
+        for (int i = -hmm/ky/1.0; i<=+hmm/ky/1.0; ++i) {
+            int y = y0 + i*1.0/ky + 0.5;
+            cv::line(img, cv::Point(x0-15, y), cv::Point(x0+15, y), color);
+        }
+
+        // Draw X axis
+        cv::line(img, cv::Point(x0, 0), cv::Point(x0, 2*y0+5), color);
+    }
+
+    ///////////////////////////
+    /// Calibration markers ///
+    ///////////////////////////
+
+    if (ui->cbRuler->currentIndex() == 2) {
+        // 0.2mm or 8mil
+        int w_0p2 = 0.2/kx + 0.5;
+        cv::line(img, cv::Point(x0/2 - w_0p2/2,         y0/2-5), cv::Point(x0/2 - w_0p2/2,         y0/2+5), color);
+        cv::line(img, cv::Point(x0/2 - w_0p2/2 + w_0p2, y0/2-5), cv::Point(x0/2 - w_0p2/2 + w_0p2, y0/2+5), color);
+        cv::line(img, cv::Point(x0/2 - w_0p2/2        , y0/2  ), cv::Point(x0/2 - w_0p2/2 + w_0p2, y0/2  ), color);
+
+        // 0.25mm
+        int w_0p25 = 0.25/kx + 0.5;
+        cv::line(img, cv::Point(x0 - w_0p25/2,          y0/2-5), cv::Point(x0 - w_0p25/2,          y0/2+5), color);
+        cv::line(img, cv::Point(x0 - w_0p25/2 + w_0p25, y0/2-5), cv::Point(x0 - w_0p25/2 + w_0p25, y0/2+5), color);
+        cv::line(img, cv::Point(x0 - w_0p25/2,          y0/2  ), cv::Point(x0 - w_0p25/2 + w_0p25, y0/2  ), color);
+
+        // 0.3mm or 12mil
+        int w_0p3 = 0.3/kx + 0.5;
+        cv::line(img, cv::Point(3*x0/2 - w_0p3/2,         y0/2-5), cv::Point(3*x0/2 - w_0p3/2,         y0/2+5), color);
+        cv::line(img, cv::Point(3*x0/2 - w_0p3/2 + w_0p3, y0/2-5), cv::Point(3*x0/2 - w_0p3/2 + w_0p3, y0/2+5), color);
+        cv::line(img, cv::Point(3*x0/2 - w_0p3/2,         y0/2  ), cv::Point(3*x0/2 - w_0p3/2 + w_0p3, y0/2  ), color);
+
+    }
+
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -195,4 +254,12 @@ void MainWindow::paintEvent(QPaintEvent *) {
     QRect port  = place_image(image, ui->lblOriginal->geometry());
 
     pnt.drawImage(port, imgOriginal, image);
+}
+
+void MainWindow::on_btnSnapshot_clicked()
+{
+    QString file = QFileDialog::getSaveFileName(this, "Save Snapshot As");
+    if (file.isEmpty()) return;
+
+    imgOriginal.save(file);
 }

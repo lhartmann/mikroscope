@@ -30,19 +30,13 @@ void microscope_calibration::recalibrate(const std::vector<cv::Vec3f> &dots, dou
     double maxx = dots[0][0];
     double miny = dots[0][1];
     double maxy = dots[0][1];
-    double minr = dots[0][2];
-    double maxr = dots[0][2];
 
     for (size_t i=1; i!=dots.size(); ++i) {
         if (minx > dots[i][0]) minx = dots[i][0];
         if (maxx < dots[i][0]) maxx = dots[i][0];
         if (miny > dots[i][1]) miny = dots[i][1];
         if (maxy < dots[i][1]) maxy = dots[i][1];
-        if (minr > dots[i][2]) minr = dots[i][2];
-        if (maxr < dots[i][2]) maxr = dots[i][2];
     }
-
-    double avgr = (maxr + minr) / 2;
 
     // Find neighbors
     std::vector<neighbors_t> neighbors(dots.size());
@@ -126,15 +120,9 @@ void microscope_calibration::recalibrate(const std::vector<cv::Vec3f> &dots, dou
             }
         }
 
-        // Redo avg and stddev
-
-        // Now average
+        // Now redo average
         dx_avg = average(dist_h);
         dy_avg = average(dist_v);
-
-        // Then calculate deviation
-        dx_stddev = stddev(dist_h, dx_avg);
-        dy_stddev = stddev(dist_v, dy_avg);
     };
 
     // Pixel aspect ratio (horizontal / vertical)

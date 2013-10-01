@@ -37,36 +37,38 @@
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QComboBox" name="cbSecondVideo">
+       <widget class="QComboBox" name="cbCameras"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbRuler">
         <item>
          <property name="text">
-          <string>Camera View</string>
+          <string>X Ruler Only</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Color Blur</string>
+          <string>XY Rulers</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>In Range</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Noise Removed</string>
+          <string>Milling Calibration Patterns</string>
          </property>
         </item>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="cbCameras"/>
-      </item>
-      <item>
        <widget class="QPushButton" name="btnCalibrate">
         <property name="text">
          <string>Start &amp;Calibration</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSnapshot">
+        <property name="text">
+         <string>&amp;Snapshot</string>
         </property>
        </widget>
       </item>
@@ -80,7 +82,7 @@
      <x>0</x>
      <y>0</y>
      <width>622</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

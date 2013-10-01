@@ -37,6 +37,7 @@ private:
 
     void paintEvent(QPaintEvent *e);
     static QRect place_image(QRect image, QRect displayport);
+    void drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky);
 
 public slots:
     void process_image();
@@ -44,6 +45,7 @@ public slots:
 private slots:
     void on_btnCalibrate_clicked();
     void on_cbCameras_currentIndexChanged(const QString &arg1);
+    void on_btnSnapshot_clicked();
 };
 
 #endif // MAINWINDOW_H
