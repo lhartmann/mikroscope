@@ -24,19 +24,19 @@ void MainWindow::drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky)
     //////////////
 
     // Draw 0.1mm ticks
-    for (int i = -wmm/kx/0.1; i<=+wmm/kx/0.1; ++i) {
+    for (int i = -wmm/0.1; i<=+wmm/0.1; ++i) {
         int x = x0 + i*0.1/kx + 0.5;
         cv::line(img, cv::Point(x, y0-5), cv::Point(x, y0+5), color);
     }
 
     // Draw 0.5mm ticks
-    for (int i = -wmm/kx/0.5; i<=+wmm/kx/0.5; ++i) {
+    for (int i = -wmm/0.5; i<=+wmm/0.5; ++i) {
         int x = x0 + i*0.5/kx + 0.5;
         cv::line(img, cv::Point(x, y0-10), cv::Point(x, y0+10), color);
     }
 
     // Draw 1.0mm ticks
-    for (int i = -wmm/kx/1.0; i<=+wmm/kx/1.0; ++i) {
+    for (int i = -wmm/1.0; i<=+wmm/1.0; ++i) {
         int x = x0 + i*1.0/kx + 0.5;
         cv::line(img, cv::Point(x, y0-15), cv::Point(x, y0+15), color);
     }
@@ -50,19 +50,19 @@ void MainWindow::drawRuler(cv::Mat &img, cv::Scalar color, double kx, double ky)
 
     if (ui->cbRuler->currentIndex() == 1) {
         // Draw 0.1mm ticks
-        for (int i = -hmm/ky/0.1; i<=+hmm/ky/0.1; ++i) {
+        for (int i = -hmm/0.1; i<=+hmm/0.1; ++i) {
             int y = y0 + i*0.1/ky + 0.5;
             cv::line(img, cv::Point(x0-5, y), cv::Point(x0+5, y), color);
         }
 
         // Draw 0.5mm ticks
-        for (int i = -hmm/ky/0.5; i<=+hmm/ky/0.5; ++i) {
+        for (int i = -hmm/0.5; i<=+hmm/0.5; ++i) {
             int y = y0 + i*0.5/ky + 0.5;
             cv::line(img, cv::Point(x0-10, y), cv::Point(x0+10, y), color);
         }
 
         // Draw 1.0mm ticks
-        for (int i = -hmm/ky/1.0; i<=+hmm/ky/1.0; ++i) {
+        for (int i = -hmm/1.0; i<=+hmm/1.0; ++i) {
             int y = y0 + i*1.0/ky + 0.5;
             cv::line(img, cv::Point(x0-15, y), cv::Point(x0+15, y), color);
         }
@@ -122,8 +122,8 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::process_image() {
-    cam.read(matOriginal);
-//    matOriginal = cv::imread("/home/lucas.hartmann/Recv/Bluetooth/01 - Padrão 1mm.png");
+//    cam.read(matOriginal);
+    matOriginal = cv::imread("/home/lucas.hartmann/Documentos/cpp/Qt/mikroscope/HighZoom.png");
 
     if (matOriginal.empty()) {
         ui->statusBar->showMessage("Failed grabbing frame (" + QString::number(++failedFramesCounter) + ").");
