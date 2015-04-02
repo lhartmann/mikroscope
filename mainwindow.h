@@ -25,6 +25,8 @@ public:
 private:
     Ui::MainWindow *ui;
     cv::VideoCapture cam;
+    cv::Mat *pCam;
+
     cv::Mat matOriginal;
     QImage  imgOriginal;
     std::vector<cv::Vec3f> vecCircles;

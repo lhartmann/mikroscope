@@ -16,11 +16,15 @@ QMAKE_CXXFLAGS += --std=gnu++0x
 SOURCES += main.cpp\
         mainwindow.cpp \
     microscope.cpp \
-    cv_center_of_mass.cpp
+    cv_center_of_mass.cpp \
+    mikroscope_ann_cal_builder.cpp \
+    ann.cpp
 
 HEADERS  += mainwindow.h \
     microscope.h \
-    cv_center_of_mass.h
+    cv_center_of_mass.h \
+    mikroscope_ann_cal_builder.h \
+    ann.h
 
 FORMS    += mainwindow.ui
 
